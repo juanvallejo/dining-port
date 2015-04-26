@@ -92,5 +92,5 @@ var server = http.createServer(function(req,res) {
 			});
 		}
 	}
-}).listen(SERVER_PORT);
+}).listen(SERVER_PORT, SERVER_HOST);
 
