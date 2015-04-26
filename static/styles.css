@@ -48,6 +48,17 @@ body {
 	.widget-header h1 {
 		font-size:1.5em;
 	}
+	.cnu-logo {
+		background:transparent url(img/logo.png) no-repeat center center;
+		display:inline-block;
+		height:20px;
+		margin:0 0 0 0;
+		opacity:0.8;
+		padding:0 0 0 0;
+		position:relative;
+		top:0;
+		width:25px;
+	}
 .widget-body {
 	background:transparent;
 	border-top:1px solid rgba(253,225,230,0.1);
