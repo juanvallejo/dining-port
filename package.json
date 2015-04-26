@@ -1,19 +1,20 @@
 {
-  "name": "OpenShift-Sample-App",
+  "name": "CNU Dining Services",
   "version": "1.0.0",
-  "description": "OpenShift Sample Application",
+  "description": "CNU Dining Menus",
   "keywords": [
-    "OpenShift",
-    "Node.js",
-    "application",
-    "openshift"
+    "CNU",
+    "Mobile Navigator",
+    "Dining",
+    "Menus",
+    "Food"
   ],
   "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url": "http://www.openshift.com/"
+    "name": "Juan Vallejo",
+    "email": "juan.vallejo.12@cnu.edu",
+    "url": "https://github.com/juanvallejo/"
   },
-  "homepage": "http://www.openshift.com/",
+  "homepage": "http://dining.cnuapps.me",
   "repository": {
     "type": "git",
     "url": "https://github.com/openshift/origin-server"
@@ -31,5 +32,5 @@
   "bundleDependencies": [],
 
   "private": true,
-  "main": "server.js"
+  "main": "local.js"
 }
