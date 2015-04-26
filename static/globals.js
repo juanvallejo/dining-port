@@ -9,6 +9,8 @@ var DEV = window.navigator.platform == 'iPhone' || 'iPad' || 'iPod' ? 'ios' : 'a
 
 if(window.location.hostname == '') {
     ENV = ENV_OFFLINE_NOSERVER;
+} else if(window.location.hostname == 'dining.cnuapps.me') {
+    ENV = ENV_OFFLINE;
 }
 
 var MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
