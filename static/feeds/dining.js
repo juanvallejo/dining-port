@@ -12,11 +12,15 @@ Dining.BISTRO           = 'BISTRO';
 Dining.CAFE             = 'CAFE';
 Dining.GRILL            = 'GRILL';
 
-Dining.COMMONS_MENU     = "http://www.google.com/calendar/feeds/cnu.edu_tjpup58u1v03ijvc91uof8qmq0%40group.calendar.google.com/public/basic?singleevents=true&sortorder=ascending&orderby=starttime&futureevents=true&max-results=180";
-Dining.REGATTAS_MENU    = "http://www.google.com/calendar/feeds/dining@cnu.edu/public/basic?singleevents=true&sortorder=ascending&orderby=starttime&futureevents=true&max-results=180";
-Dining.EINSTEINS_MENU   = "http://mobileapps.cnu.edu/rssfeeds/einsteins_menu.xml";
+Dining.COMMONS_MENU     = 'http://www.google.com/calendar/feeds/cnu.edu_tjpup58u1v03ijvc91uof8qmq0%40group.calendar.google.com/public/basic?singleevents=true&sortorder=ascending&orderby=starttime&futureevents=true&max-results=180';
+Dining.REGATTAS_MENU    = 'http://www.google.com/calendar/feeds/dining@cnu.edu/public/basic?singleevents=true&sortorder=ascending&orderby=starttime&futureevents=true&max-results=180';
+Dining.EINSTEINS_MENU   = 'http://mobileapps.cnu.edu/rssfeeds/einsteins_menu.xml';
+Dining.EINSTEINS_HOURS  = 'http://mobileapps.cnu.edu/rssfeeds/einsteins_hours.xml';
 Dining.BISTRO_MENU      = 'http://mobileapps.cnu.edu/rssfeeds/discovery_bistro_menu.xml';
+Dining.BISTRO_HOURS     = 'http://mobileapps.cnu.edu/rssfeeds/discovery_bistro_hours.xml';
+Dining.CAFE_HOURS       = 'http://mobileapps.cnu.edu/rssfeeds/discovery_cafe_hours.xml';
 Dining.CAFE_MENU        = 'http://mobileapps.cnu.edu/rssfeeds/discovery_cafe_menu.xml';
+Dining.GRILL_HOURS      = 'http://mobileapps.cnu.edu/rssfeeds/discovery_grill_hours.xml';
 Dining.GRILL_MENU       = 'http://mobileapps.cnu.edu/rssfeeds/discovery_grill_menu.xml';
 
 Dining.USE_DEFAULT_MENU = true;
@@ -37,17 +41,13 @@ Dining.get = function(place, callback) {
     } else if (place == Dining.COMMONS) {
         diningFeed(Dining.COMMONS_MENU, callback);
     } else if (place == Dining.EINSTEINS) {
-        // hours = xmlDoc(EINSTEINS_HOURS).getElementsByTagName("description")[1].childNodes[0].nodeValue;
-        // menus = xmlDoc(EINSTEINS_MENU).getElementsByTagName("description")[1].childNodes[0].nodeValue;
-
-        Dining.parseStandardDiningFeed(Dining.EINSTEINS_MENU, callback);
-
+        Dining.parseStandardDiningFeed(Dining.EINSTEINS_MENU, Dining.EINSTEINS_HOURS, callback);
     } else if (place == Dining.BISTRO) {
-        Dining.parseStandardDiningFeed(Dining.BISTRO_MENU, callback);
+        Dining.parseStandardDiningFeed(Dining.BISTRO_MENU, Dining.BISTRO_HOURS, callback);
     } else if(place == Dining.CAFE) {
-        Dining.parseStandardDiningFeed(Dining.CAFE_MENU, callback);    
+        Dining.parseStandardDiningFeed(Dining.CAFE_MENU, Dining.CAFE_HOURS, callback);    
     } else if(place == Dining.GRILL) {
-        Dining.parseStandardDiningFeed(Dining.GRILL_MENU, callback);
+        Dining.parseStandardDiningFeed(Dining.GRILL_MENU, Dining.GRILL_HOURS, callback);
     }
     
 }
@@ -56,10 +56,14 @@ Dining.get = function(place, callback) {
  * Returns a block of text containing
  * the entire menu data
  */
-Dining.parseStandardDiningFeed = function(place, callback) {
+Dining.parseStandardDiningFeed = function(place, hours, callback) {
 
     if(Dining.cache[place]) {
-        return callback.call(this, null, Dining.cache[place]);
+        return callback.call(this, null, Dining.cache[place], Dining.cache[hours]);
+    }
+
+    if(!callback && typeof hours == 'function') {
+        callback = hours;
     }
 
     Utilities.sendGETRequest(place, function(response) {
@@ -68,6 +72,7 @@ Dining.parseStandardDiningFeed = function(place, callback) {
             return callback.call(this, Dining.ERR_EMPTY_MENU, null);
         }
 
+        var times       = null;
         var content     = response.responseXML.getElementsByTagName('description')[1].childNodes[0].nodeValue;
 
         // format hours
@@ -78,7 +83,27 @@ Dining.parseStandardDiningFeed = function(place, callback) {
 
         Dining.cache[place] = content;
 
-        callback.call(this, null, content);
+        if(hours) {
+
+            Utilities.sendGETRequest(Dining.EINSTEINS_HOURS, function(response) {
+                
+                if(response.responseXML) {
+                    
+                    times       = response.responseXML.getElementsByTagName('description')[1].childNodes[0].nodeValue;
+                    times       = times.split('<td>')[0];
+
+                    times       = '<strong class="bold">Schedule</strong>' + times;
+
+                    Dining.cache[hours] = times;
+                }
+
+                callback.call(this, null, content, times);
+
+            });
+
+        } else {
+            callback.call(this, null, content, times);
+        }
 
     });
 

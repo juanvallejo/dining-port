@@ -95,7 +95,12 @@ Actions.getDefaultMenu = function(place, container) {
 			return container.innerHTML = '<li class="' + Globals.widget_item_class + '"><h3><br />' + error + '</h3></li>';
 		}
 
-		container.innerHTML = '<span class="widget-item-block">' + response + '</span>';
+		if(times) {
+			container.innerHTML += '<span class="widget-item-block">' + times + '</span>';
+		}
+
+		// container.innerHTML = '<span class="widget-item-block">' + times + '</span>'; 
+		container.innerHTML += '<span class="widget-item-block">' + response + '</span>';
 
 	});
 

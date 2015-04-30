@@ -160,6 +160,13 @@ body {
 			span.widget-item-block ul li {
 				font-weight:300;
 			}
-			span.widget-item-block td strong {
+			span.widget-item-block td strong, span.widget-item-block strong.bold {
 				color:rgb(85,6,18);
 			}
+
+#wrapper.mobile {
+	background:transparent;
+	height:100%;
+	margin:0;
+	width:100%;
+}
