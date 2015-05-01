@@ -29,8 +29,8 @@ function main() {
 	// initialize button properties
 	for(var i = 0; i < buttons.length; i++) {
 
-		buttons.item(i).background 			= 'rgba(85,6,18,0.15)';
-		buttons.item(i).activeBackground 	= 'rgba(85,6,18,0.3)';
+		buttons.item(i).background 			= 'rgba(20,44,83,0.15)';
+		buttons.item(i).activeBackground 	= 'rgba(20,44,83,0.3)';
 		buttons.item(i).identifier 			= i;
 
 		buttons.item(i).addEventListener('click', function() {
